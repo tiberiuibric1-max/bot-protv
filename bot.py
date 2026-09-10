@@ -42,22 +42,23 @@ def trimite_filme_protv():
             return
 
         soup = BeautifulSoup(response.content, "html.parser")
-        randuri = soup.select("tr")
+        randuri = soup.select("table.program_tv tr")
         filme = []
 
         for rand in randuri:
-            ora_elem = rand.select_one(".ora, td:nth-child(1)")
-            titlu_elem = rand.select_one(".titlu, td:nth-child(2)")
+            ora_elem = rand.select_one("td.ora, td:nth-child(1)")
+            titlu_elem = rand.select_one("td.title, td:nth-child(2) a")
 
             if ora_elem and titlu_elem:
                 ora = ora_elem.get_text(strip=True)
                 titlu = titlu_elem.get_text(strip=True)
-                filme.append(f"⏰ **{ora}** - {titlu}")
+                if ora and titlu:
+                    filme.append(f"⏰ **{ora}** — {titlu}")
 
         if not filme:
-            mesaj = "📺 **Program Pro TV**: Nu am găsit filme sau emisiuni în programul de azi."
+            mesaj = "📺 **Program Pro TV**: Nu am găsit emisiuni în programul de azi."
         else:
-            lista_filme = "\n".join(filme[:15])  # Prinde primele 15 intrări
+            lista_filme = "\n".join(filme[:15])  # Prinde primele 15 emisiuni/filme
             mesaj = f"📺 **Programul Pro TV de Astăzi**:\n\n{lista_filme}"
 
         # Trimitere către Discord
@@ -79,7 +80,7 @@ schedule.every().day.at("09:00").do(trimite_filme_protv)
 
 print("Botul a fost inițializat și așteaptă ora programată...")
 
-# Trimitere de test la pornire
+# Trimitere de test la repornire
 trimite_filme_protv()
 
 while True:
