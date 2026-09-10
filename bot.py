@@ -25,8 +25,7 @@ threading.Thread(target=run_web_server, daemon=True).start()
 
 
 # --- 2. CONFIGURARE DISCORD WEBHOOK ---
-# Înlocuiește link-ul de mai jos cu URL-ul tău real de Webhook din Discord
-DISCORD_WEBHOOK_URL = "PUNE_AICI_LINKUL_TĂU_DE_WEBHOOK"
+DISCORD_WEBHOOK_URL = "https://discordapp.com/api/webhooks/1547724663478681810/WablUbKprYD95ZzQ-0OtmOAElsVLLiTfp5FEMNYBK0W2d4V8YkQAvcayJEBTrzCdZo6E"
 
 
 # --- 3. LOGICA DE SCRAPING PRO TV ȘI TRIMITERE PE DISCORD ---
@@ -58,7 +57,7 @@ def trimite_filme_protv():
         if not filme:
             mesaj = "📺 **Program Pro TV**: Nu am găsit filme sau emisiuni în programul de azi."
         else:
-            lista_filme = "\n".join(filme[:15]) # Prinde primele 15 intrări
+            lista_filme = "\n".join(filme[:15])  # Prinde primele 15 intrări
             mesaj = f"📺 **Programul Pro TV de Astăzi**:\n\n{lista_filme}"
 
         # Trimitere către Discord
@@ -75,13 +74,12 @@ def trimite_filme_protv():
 
 
 # --- 4. PROGRAMARE ZILNICĂ ---
-# Programează trimiterea în fiecare zi la ora 09:00 (sau poți schimba ora)
+# Programează trimiterea în fiecare zi la ora 09:00
 schedule.every().day.at("09:00").do(trimite_filme_protv)
 
 print("Botul a fost inițializat și așteaptă ora programată...")
 
-# Trimitere de test la pornire pentru a verifica dacă funcționează imediat
-# (Opțional: șterge linia de mai jos dacă nu vrei mesaj la fiecare repornire)
+# Trimitere de test la pornire
 trimite_filme_protv()
 
 while True:
